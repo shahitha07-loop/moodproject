@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoodMate - {{ data.title }}</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+      padding: 20px;
+      box-sizing: border-box;
+      transition: background 0.5s ease;
+    }
+    
+    .theme-happy { background: linear-gradient(135deg, #FF9A9E, #FECFEF); }
+    .theme-sad { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
+    .theme-tired { background: linear-gradient(135deg, #84fab0, #8fd3f4); }
+    .theme-motivated { background: linear-gradient(135deg, #fccb90, #d57eeb); }
+
+    .card {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 30px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      border: 6px solid #FFF;
+      max-width: 480px;
+      width: 100%;
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+      color: #333;
+      margin-top: 0;
+      text-align: center;
+    }
+    
+    .quote-box {
+      background: #FFF5E4;
+      padding: 15px;
+      border-radius: 20px;
+      border: 2px dashed #FFC4DD;
+      font-size: 1.1rem;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #D14D72;
+      font-weight: bold;
+    }
+    
+    .section-title {
+      font-size: 1.2rem;
+      color: #333;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .spotify-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .spotify-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #1DB954;
+      color: white;
+      text-decoration: none;
+      padding: 12px 18px;
+      border-radius: 25px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(29, 185, 84, 0.3);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+    }
+
+    .spotify-btn:hover {
+      background-color: #1ed760;
+      transform: translateY(-2px);
+    }
+
+    .song-info {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .song-title { font-size: 1rem; }
+    .song-artist { font-size: 0.8rem; opacity: 0.9; font-weight: normal; }
+    .spotify-icon { font-size: 1.2rem; }
+
+    ul { margin: 0; padding-left: 20px; }
+    li { margin-bottom: 6px; font-size: 1rem; }
+
+    /* Interactive Thank You Card */
+    .thank-you-box {
+      margin-top: 25px;
+      background: linear-gradient(135deg, #FFF3B0, #CAFFBF);
+      padding: 20px;
+      border-radius: 20px;
+      text-align: center;
+      border: 2px solid #99E2B4;
+    }
+
+    .thank-you-box h4 {
+      margin: 0 0 8px 0;
+      font-size: 1.1rem;
+      color: #2B9348;
+    }
+
+    .feedback-btns {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .feedback-btn {
+      background: #ffffff;
+      border: 2px solid #99E2B4;
+      padding: 6px 14px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+
+    .feedback-btn:hover {
+      transform: scale(1.1);
+      background: #E8F5E9;
+    }
+
+    #thank-you-message {
+      display: none;
+      font-size: 1rem;
+      color: #2B9348;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .back-btn {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      background: #333;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 12px;
+      border-radius: 20px;
+      font-size: 1.1rem;
+    }
+    
+    .back-btn:hover { background: #555; }
+  </style>
+</head>
+<body class="{{ data.theme_class }}">
+  <div class="card">
+    <h1>{{ data.title }}</h1>
+    
+    <div class="quote-box">
+      {{ data.quote }}
+    </div>
+
+    <div class="section-title">🎧 Play on Spotify</div>
+    <div class="spotify-list">
+      {% for song in data.songs %}
+        <a href="{{ song.url }}" target="_blank" class="spotify-btn">
+          <div class="song-info">
+            <span class="song-title">▶ {{ song.title }}</span>
+            <span class="song-artist">{{ song.artist }}</span>
+          </div>
+          <span class="spotify-icon">🎵</span>
+        </a>
+      {% endfor %}
+    </div>
+
+    <div class="section-title">🎬 Fun Things to Watch</div>
+    <ul>
+      {% for item in data.watch %}
+        <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+
+    <div class="section-title">😋 Yummy Snacks to Eat</div>
+    <ul>
+      {% for snack in data.eat %}
+        <li>{{ snack }}</li>
+      {% endfor %}
+    </ul>
+
+    <div class="section-title">💡 Things to Do</div>
+    <ul>
+      {% for activity in data.activities %}
+        <li>{{ activity }}</li>
+      {% endfor %}
+    </ul>
+
+    <!-- Cute Thank-You Footer Block -->
+    <div class="thank-you-box">
+      <h4>✨ Thanks for visiting MoodMate! ✨</h4>
+      <p style="margin: 0; font-size: 0.95rem; color: #555;">Did this page brighten your day?</p>
+      <div class="feedback-btns">
+        <button class="feedback-btn" onclick="sayThanks('Yes! 🥰')">Yes! 🥰</button>
+        <button class="feedback-btn" onclick="sayThanks('A little bit! 🌟')">A little bit! 🌟</button>
+      </div>
+      <div id="thank-you-message"></div>
+    </div>
+
+    <a href="{% url 'home' %}" class="back-btn">← Choose Another Mood</a>
+  </div>
+
+  <script>
+    function sayThanks(response) {
+      const msg = document.getElementById('thank-you-message');
+      msg.style.display = 'block';
+      msg.innerHTML = "Yay! Sending you warm hugs and positive energy! 🌈💖";
+    }
+  </script>
+</body>
+</html>
