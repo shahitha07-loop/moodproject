@@ -1,1 +1,1 @@
-web: gunicorn moodproject.wsgi
+web: gunicorn moodproject.wsgi:application
